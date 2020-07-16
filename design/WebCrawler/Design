@@ -1,0 +1,73 @@
+
+Requirements and Goals:
+Scalable
+Extendible
+
+Design Considerations:
+1. Protocol - HTTP
+2. Should support robot.txt
+
+Capacity Estimation & Constraints:
+If we want to crawl 15 billion pages within four weeks, how many pages do we need to fetch per second?
+15B / (4 weeks * 7 days * 86400 sec) ~= 6200 pages/sec
+
+
+High Level Design:
+1. Pick a URL from the unvisited URL list.
+   Determine the IP Address of its host-name.
+   Establish a connection to the host to download the corresponding document.
+   Parse the document contents to look for new URLs.
+   Add the new URLs to the list of unvisited URLs.
+   Process the downloaded document, e.g., store it or index its contents, etc.
+   Go back to step 1
+
+How to crawl?
+1. BFS (Normally)
+2. DFS(Can be used if already a connection established with website)
+
+
+Components:
+1. HTML Fetcher <-> Duplicate Remover
+2. Extractor
+4. URL Frontier
+	URL Frontier 
+		1. DataStructure contains all URL's that remain to be downloaded
+		2. Crawls by Breadth first search
+		3. Can distribute search to multiple threads or servers (through consistent hashing)
+		4. To avoid overloading, our crawler can have a collection of distinct FIFO sub-queues on each server.
+		5. Each worker thread will have its own que and is backed by consistent hashing
+
+	
+	Fetcher module:
+	Downloads the file using HTTP
+	
+	Document input stream:
+	Caches the document for enabling the same document not to be downloaded more than once
+	Document dedupe can be done by calculating the checksum of each downloaded document
+	Can use cache to check for hash and then checks the DB
+	
+	URL Filters:
+	Customizable way to filter the Url's that needs to be downloaded. Can blacklist url's.
+	Worker thread consults this filter before downloading the URL
+	
+	DNS resolution:
+	DNS Name resolution can be a bottleneck for crawler. Can cache DNS results to re-use.
+
+
+URL Dedupe test:
+Can store checksum in Db. Should perform URL dedupe test before adding to URl frontier.
+Can use Bloom filters for deduping. Can reduce false positive by making bit vector larger
+
+
+Checkpointing:
+Can take snapshots in order to resume from that point
+
+
+Fault tolerance:
+Consistant hashing to distribute load to different servers.
+Can persist FIFO queue to disk
+
+Data partitioning:
+Can store similar hostnames in the same host.
+Will dump a snapshot in order for other server to resume processing
+

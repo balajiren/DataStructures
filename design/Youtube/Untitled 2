@@ -1,0 +1,34 @@
+Functional Requirements:
+
+Users should be able to upload videos.
+Users should be able to share and view videos.
+Users should be able to perform searches based on video titles.
+Our services should be able to record stats of videos, e.g., likes/dislikes, total number of views, etc.
+Users should be able to add and view comments on videos.
+
+Non-Functional Requirements:
+
+The system should be highly reliable, any video uploaded should not be lost.
+The system should be highly available. Consistency can take a hit (in the interest of availability); if a user doesn’t see a video for a while, it should be fine.
+Users should have a real time experience while watching videos and should not feel any lag.
+
+
+API:
+1. uploadVideo(api_dev_key, video_title, vide_description, tags[], category_id, default_language, 
+                        recording_details, video_contents) returns string
+2. searchVideo(api_dev_key, search_query, user_location, maximum_videos_to_return, page_token) returns string
+3. streamVideo(api_dev_key, video_id, offset, codec, resolution) returns stream
+
+
+Design:
+1. Processing queue
+2. Encode
+3. thumbnail generator
+4. Video Storage
+5. User Database
+
+DB Schema:
+1. VideoID, TITLE, Desc, Uploader, likes, dislikes
+2. CommentID,VideoID,usERID
+User DB:
+id, name, email, address, age

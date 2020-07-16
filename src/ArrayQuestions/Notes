@@ -1,0 +1,38 @@
+Array stratergies
+
+1. Arrays provide random access allocate contiguous space
+2. Arrays can help with cache locality i.e the tendency of a processor to access the same set of memory locations
+repetitively over a short period of time.
+
+Disadvantages:
+1. Insertion and delete is expensive as have to shift elements
+
+1. Hashmap - for forward lookup, non contiguous array
+2. Sliding windows - que and window size
+3. priority queue - largest or smallest
+4. Binary Search - sorted order
+5. 2 pointer - subarray, contiguous array
+6. Scan from left and Scan from right
+
+
+1.TYPES
+ A. IF SUBARRAY - HASHMAP OR 2 POINTER
+ B. CONTIGUOUS - 1. 2 POINTER - LEFT & RIGHT
+ 				    ADD / REMOVE
+ 				    CALCULATE RIGHT-LEFT
+ 				 2. (RUNNING INDEX) USE HASHMAP FOR RECORDING COUNT/SUM & INDEX
+
+ C. NON CONTIGUOUS - HASHMAP / QUE / 2 POINTER
+ D. MAX IN IN K SIZE - SLIDING WINDOW
+ 		1. REMOVE FROM FRONT  = I-K => deque.getFirst() <= i - k)
+ 		2. REMOVE FROM REAR
+ 		  while (!deque.isEmpty() && arr[i] >= arr[deque.peekLast()]) {
+	            deque.removeLast();
+	        }
+	        // Remove the elements which are out of this window
+	        while (!deque.isEmpty() && deque.getFirst() <= i - k) {
+	            deque.removeFirst();
+	        }
+ 
+4. SUBARRAY SUM
+	- hashmap - add index =>  m.put(sum, i); check sum - k

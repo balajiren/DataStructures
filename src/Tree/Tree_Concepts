@@ -1,0 +1,13 @@
+1. Binary tree has N-1 edges
+2. BST should have node greater than the left node and less than or equal to the the right node
+    LEFT < ROOT =< RIGHT
+3. Max nodes at level l is 2POWl
+4. Max nodes at height h is 2POWH-1
+5. Min. possible height - Log 2(N+1)-1
+
+5. Traversals :
+PreOrder : push root to stack , push right to stack, push left to stack
+Inorder : recursive : root.left and then root.right
+postOrder: Traverse left, right and then root
+
+   

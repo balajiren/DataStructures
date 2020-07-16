@@ -1,0 +1,57 @@
+
+
+
+
+
+API:
+createURL(api_dev_key, original_url, custom_alias=None, user_name=None, expire_date=None)
+
+api_dev_key (string): The API developer key of a registered account. This will be used to, among other things, throttle users based on their allocated quota.
+original_url (string): Original URL to be shortened.
+custom_alias (string): Optional custom key for the URL.
+user_name (string): Optional user name to be used in the encoding.
+expire_date (string): Optional expiration date for the shortened URL.
+
+
+DB Design:
+
+URL :
+	hash
+	Original Url
+	CreationDate
+	ExpirationDate
+	UserID
+	
+User:
+	UserID,Name,login
+	
+	
+Algorithm:
+Encode the Url with Base64 encoding
+	
+	
+Design considerations:
+1. Add sequenceID to ensure no two users get same shortened URL
+
+Key generation Service:
+Offline service for generating unique keys
+Have 2 tables used and new
+StandbyDB to avoid SPOF
+
+
+Partitioning:
+Range based(based on first character) vs Hashbased partition(Consistant hashing)
+
+
+Caching:
+Can cache URL frequently used
+Can use LRU cache
+When there is a cache miss, read from the database
+
+Load Balancing:
+1.Round robin(has limitations as it does not care whether server is busy)
+2. Can use intelligent load balancing that checks server status
+
+Purging:
+1.Can recycle Url's
+2. Clean-up service Need to remove expired URL's from cache and db

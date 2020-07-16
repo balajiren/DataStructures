@@ -1,0 +1,44 @@
+Facebook Messenger is a software application which provides text-based instant messaging services to its users.
+
+Design Considerations:
+1. Minimum latency
+2. Support 1:1 conversation and online/offline status
+3. Persistent storage of chat history
+
+Capacity Estimation:
+1. 20 billion messages * 100 bytes => 2 TB/day
+
+High Level design:
+1. User
+2. Chat Server
+3. Data Storage
+
+Component Design:
+1. Receive Incoming and deliver outgoing message
+2. Retrieve message from DB
+3. Track User Online status
+
+Message handling:
+1. Pull Vs Push Model
+2. Pull has more latency as server has to track messages waiting to be delivered
+3. Long polling Vs Web Sockets
+4. Can have a hash map of open connections and use the connection
+
+Message Delivery:
+1. Store message to DB, Deliver message and send ack
+2. Chat Server will find the server that holds the open connection for receiver and then pass
+the message to the server
+3. Only timestamp cannot determine ordering. So a sequence number has to be used in addition
+
+Database:
+1. Has to support high volume of small updates and get range
+2. Cannot use Relational/Mongo as cannot afford to read/write a row after each message
+3. Can use HBASE for faster writes and reduced latency
+
+Database partition can be done based on User id as message id will be slow.
+Partition can be retrieved through hash(UserID) % 1000
+
+Fault tolerance:
+==============
+1. On failure, allow client to reconnect as its challenging to failover TCP connections
+2. Can manage multiple copies of data

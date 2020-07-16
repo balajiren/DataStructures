@@ -1,0 +1,10 @@
+Hash code for the index to array is hash(key)%array size
+Use linked list to store key and values for handling collision
+To store compute the hash code for the values by hash(key)%array_size and then map the hash code to the index in the array
+To retrieve compute the hash code from the key and compute the index from hash code
+If the number of collisions are very high then the hash time complexity drops to O(N) else O(1)
+Can also implement hash table using balanced binary tree and guarantee O(Log(N)) and reduce space spent in creating a big array
+
+1. Hash Map can also use Object as Key
+2. Keys has to immutable so that it can get the same hash code for the object
+3.

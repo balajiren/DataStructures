@@ -1,0 +1,82 @@
+Dropbox
+========
+
+
+1. Requirement:
+Users should be able to upload and download their files/photos from any device.
+Users should be able to share files or folders with other users.
+Our service should support automatic synchronization between devices, i.e., after updating a file on one device, it should get synchronized on all devices.
+The system should support storing large files up to a GB.
+ACID-ity is required. Atomicity, Consistency, Isolation and Durability of all file operations should be guaranteed.
+Our system should support offline editing. Users should be able to add/delete/modify files while offline, and as soon as they come online, all their changes should be synced to the remote servers and other online devices.
+
+Extended Requirements:
+Snapshotting data
+
+DESIGN CONSIDERATIONS:
+1. High read and write volumes
+2. Files can be stored by splitting into individual chunks
+3. Only updated chunks can be transferred
+4. Keeping a local copy can save bandwidth
+5. Clients can intelligently upload diff's instead of the whole chunk
+
+
+CAPACITY CONSTRAINTS:
+1. AVERAGE 100M DAU AND 500M TOTAL USERS
+2. AVG. UPLOAD OF 200 FILES EQUAL 100 BILLION TOTAL FILES
+3. STORAGE = 100B * 100KB = 10PB
+
+HIGH LEVEL DESIGN:
+1. CLIENTS
+2. BLOCK SERVER
+3. METADATA SERVER
+4. SYNCHRONIZATION SERVER
+5. METADATA STORAGE
+
+
+CLIENT
+1. Upload/Download file, Detect file changes and handle conflicts due to offline updates
+2. Interacts with Sync Server
+
+Handle file transfer efficiently:
+1. break file to chunks and transfer only 
+3.
+
+CLIENT TO SERVER COMMUNICATION:
+Client can do long polling and can get updates from server once its available
+
+Client Components:
+1. Internal metadata database - maintain version, chunks etc.
+2. Chunker - Chunks with chunking algorithm, Reconstructs from chunks
+3. Watcher - watch for local workspace and informs indexer about this change. Also sync with sync server.
+4. Indexer - indexer will watch events from watcher and updates metadata
+
+
+
+METADATA DATABASE:
+1. Responsible for versioining and metadata maintenance
+2. Should support consistency
+3. if ACID not supported in DB, have to implement it in sync service
+4. Stores :
+	1. Chunks
+	2. Devices
+	3. Workspace
+	4. User
+	5. Files
+	
+SYNCHRONIZATION SERVICE:
+A. Tracks file updates and applies changes to subscribed clients.
+B. Can use a differentiating algorithm to sync only the diff
+
+
+MESSAGE QUEING SERVICE:
+1. This can handle substantial number of client requests to Synchroniazation Service
+2. Supports 2 types:
+	1. Request Queue
+	2. Response Queue
+Request que is shared across clients. All updates will be sent to request que first
+and updates the metadata
+Response que is responsible for delivery updates to the clients
+
+CLOUD BLOCK STORAGE:
+

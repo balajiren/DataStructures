@@ -1,0 +1,46 @@
+1. High level Design
+	
+	Tables
+	-------
+	
+	1. Users - UserID,Name,Email etc
+	2. Tweets - ID,UserID,CreationDate 
+	3 UserFollow - UserID1, UserID2
+	4. Favourites - TweetID, UserID
+	
+	3. Followers - 
+	4. Connections
+	
+	
+	API:
+	tweet(api_dev_key, tweet_data, tweet_location, user_location, media_ids)
+	
+	
+	Constraints:
+	1. Need to distribute due to high read volume
+	2. Sharding based on TweetID. Hash function will map tweetID to random server.
+	  Example: Consistant hashing. This can also increase latency
+	3. Can reduce latency by storing hot tweets in cache.
+	4. Can use TweetID and time for sharding(based on tweet time)
+	
+	
+	Caching:
+	1. Can use LRU Cache but can smart by caching only 20% of recent tweets
+	2.Cache can be of K,V with OwnerID as key and value as doubly linked list
+	3. 
+	
+	Load balancer
+	-------------
+	nginx / ELB load balancer
+	
+	Caching
+	--------
+	1. Store main pieces in cache 
+
+2. Low Level Design
+
+   1. Whats the data size
+   2. Think about Single Point of Failure
+   3. In memory cache to handle repeated read requests and use Sharding
+   
+    

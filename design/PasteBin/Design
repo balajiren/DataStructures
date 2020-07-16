@@ -1,0 +1,58 @@
+
+Design Considerations:
+Limit of data that user can paste
+Size limits on custom URL
+
+API Design:
+addPaste(api_dev_key, paste_data, custom_url=None user_name=None, paste_name=None, expire_date=None)
+getPaste(api_dev_key, api_paste_key)
+deletePaste(api_dev_key, api_paste_key)
+
+KGS:
+Key gen service can be used to generate ID
+
+Database Design:
+1.Store billions of records
+2. No relationship between records and service is read heavy
+
+User table :
+a. name
+b. email
+c. created_date
+d. last_login
+e. userId - PK
+
+Paste:
+a. paste_name
+b. url
+c. content
+d. expiration_time
+e. created_date
+f. userId - FK
+g. pasteId - PK
+
+
+Component Design:
+1. Client
+2. Load balancer
+3. App Server
+4. Object Storage
+5. Key Storage DB
+
+
+def base_encode(num, base=62):
+    digits = []
+    while num > 0
+      remainder = modulo(num, base)
+      digits.push(remainder)
+      num = divide(num, base)
+    digits = digits.reverse
+
+System APIs :
+
+Can be implemented as Restful Webservices as -
+
+createPaste
+updatePaste
+getPaste
+deletePaste

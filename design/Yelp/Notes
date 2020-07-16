@@ -1,0 +1,38 @@
+
+
+
+
+DB Design:
+
+1. LocationID(8 bytes)
+2. Name  (256 bytes)
+3. Latitude (8 bytes)
+4. Longitude (8 bytes)
+5. Description (512 bytes)
+6. Category (1 byte): E.g., coffee shop, restaurant, theater, etc.
+
+Review table - LocationID, ReviewId,ReviewText, Rating
+
+API - Returns JSON
+search(api_dev_key, search_terms, user_location, radius_filter, maximum_results_to_return,
+    category_filter, sort, page_token)
+
+System Design:
+1. Option 1 - Store location id in the Relational DB i.e Store latitude and longitude
+   - Get all places between x+d and y+d
+   - Not efficient as there are too many places between x-d and x+d and y-d/y_+d
+2. Split map in to grid - Quad tree
+Select * from Places where Latitude between X-D and X+D and Longitude between Y-D and Y+D
+and GridID in (GridID, GridID1, GridID2, ..., GridID8)
+3. If are too many places in a grid, it can be broken down in to smaller child grids
+
+Capacity:
+For each Place, if we cache only LocationID and Lat/Long, we would need 12GB to store all places.
+24 * 500M => 12 GB
+Since each grid can have a maximum of 500 places, and we have 500M locations, how many total grids we will have?
+500M / 500 => 1M grids
+
+Inserting to Grid:
+If distributed system, Find the server containing the grid and then insert
+
+Sharding:

@@ -1,0 +1,53 @@
+
+DESIGN:
+
+1. Have to modify quad tree data structure to support frequent updates
+2. Can have all the drivers position in the hash table and update Quad tree less frequently
+3. Store DriverID, Latitude, Longitude, NewLatitude,NewLongitude
+4. Can distribute the HT to multiple servers
+
+
+Broadasting driver's location:
+1. Push Model can be used to push latest driver location to customers
+2. Can implement long polling or push
+
+
+High level components:
+1. Notification Server
+2. Aggregation Server
+3. QuadTree Server
+4. Driver location Server
+5. QuadTree Index
+6. Database
+
+Flow:
+The customer will put a request for a ride.
+One of the Aggregator servers will take the request and asks QuadTree servers to return nearby drivers.
+The Aggregator server collects all the results and sorts them by ratings.
+The Aggregator server will send a notification to the top (say three) drivers simultaneously, whichever driver accepts the request first will be assigned the ride. The other drivers will receive a cancellation request. If none of the three drivers respond, the Aggregator will request a ride from the next three drivers from the list.
+Once a driver accepts a request, the customer is notified.
+
+
+Fault tolerance:
+1. Can use secondary or storage to location/notification
+
+
+SUPPLY/DEMAND
+
+LOGIC TO MATCH SUPPLY/DEMAND IS DISPATCH OPTIMIZATION
+
+1. MAPS/ETA
+
+2. POST TRIP PIPELINE
+
+geo by supply. A geospatial index is required for DISCO to make its decisions based on where all the supply is and where it is expected to be.
+
+geo by demand. A geo index is also required for demand
+
+As vehicles move around location updates are sent to geo by supply.
+
+To match riders to drivers or just display cars on a map, DISCO sends a request to geo by supply.
+
+Geo by supply makes a coarse first pass filter to get nearby candidate that meet requirements.
+
+Then the list and requirements are sent to routing / ETA to compute the ETA of how nearby they are not geographically, but by the road system.

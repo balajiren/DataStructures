@@ -1,0 +1,141 @@
+1. Features
+2. Define API's
+3. Availability - Redundancy / Consistant Hashing / Circuit Breaker
+4. Latency Performance - Caching
+5. Scalability - Scale up / down
+6. Durability - Data storage securely
+7. Class Diagram
+8. Security
+9. Cost-effectiveness
+
+
+Characteristics of Distributed Systems:
+1. Horizontal(More resources) and Vertical scaling(More servers)
+2. Reliability (Either by redundancy. Available need not be reliable)
+3. Availability
+4. Efficiency (Throughput and latency)
+    - Latency((number of messages sent)
+    - Throughput (Size of message)
+ 5. Serviceability / Manageability
+       Speed at which the system can be repaired
+
+
+
+RESI -API DESIGN GUIDELINES
+--------------------------
+1. RESOURCES (URI'S), HEADERS, QUERY PARAMS, HTTP CODES
+2. AVOID ACTION VERBS USE Users/id
+3. 4 TYPES OF HTTP MESSAGE HEADERS I.E GENERAL, CLIENT REQ, SERVER RESP, ENTITY HEADER
+4.QUERY PARAMS - PAGING, FILTERING, SORTING, SEARCHING
+
+
+
+BENCHMARKS Ref: https://dzone.com/articles/13-api-metrics-that-every-platform-team-should-be
+----------
+
+1. CPU AND MEMORY 
+2. UPTIME  - 99.99% (3 OR 4 NINE'S)
+2. RPS - 16000/MIN - CAN REDUCE BY OPTIMIZATION LIKE CACHING
+3. LATENCY - HOW SLOW THE SERVICE IS-   P99 / P95 - APPROX 1%
+4. ERRORS PER MINUTE
+
+
+
+TIPS:
+
+1. Don't go in to detail first
+2. Give a highlevel and give a PASS to get feedback from interviewer
+3. Don't get a prefix pattern
+4. Keep it Simple Stupid (KISS)
+
+
+APPROACH
+---------
+
+processing and servers
+storage
+caching
+concurrency and communication
+security
+load balancing and proxy
+CDN
+Monetization
+1.IDENTIFY THE CONSTRAINTS SUCH AS NUMBER OF REQUESTS, USERS ETC.
+A. GO BREADTH FIRST. PAUSE AND GET FEEDBACK
+2. STATE YOUR ASSUMPTIONS
+3. START THE DESIGN
+		a. Scope the problem
+		b. Make reasonable assumptions and identify constraints
+		c. Draw major components
+		d. Identify Key issues
+4. CREATE HIGH LEVEL DESIGN
+5. SCALE THE DESIGN
+			1. Scaling - Horizontal vs Vertical 
+			2. Load balancer
+			3. Database partitioning
+			4. Caching / Async Processing i.e Messaging que/ Async que
+			5. Networking - Bandwidth - amount of data, throughput- time to transfer amount of data
+			 latency - Delay between sending info.
+			6. CDN(Content delivery network)
+		  
+6. CACHE UPDATE STRATEGY
+	1. Cache aside - look for cache entry, if miss look from db
+	     a. Stale cache can be avoided by setting TTL 
+	2. WRITE THROUGH CACHE - Application use cache as the main data store and cache will write to DB
+		Pros - When a new node is added after failure, this has to be added to the DB as an entry
+		Const -Most Data written may not be read
+		
+	 3. Write-Behind cache - Updatees to cache and async writes to DB
+	     Pros - Reduced latency
+	     Cons - Need to maintain consistancy
+7. MESSAGE QUE - Asynchronous workflows help reduce request times for expensive operations that would otherwise be performed in-line.
+Message queues receive, hold, and deliver messages. If an operation is too slow to perform inline, you can use a message queue with the following workflow.
+They can also help by doing time-consuming work in advance, such as periodic aggregation of data.
+Example : RabbitMQ
+
+8. PUBLISHER SUBSCRIBER MODEL - Add entry to que i.e Kafka and worker process this event
+								Example: Twitter
+ 		
+   EVENT DRIVERN MODEL -  When an event occurs, event is published in the bus
+   						  Example : Gaming 
+   						  Use timestamp and state to determine
+   						  
+   						  
+ 9. Protocols
+    Peer to Peer - XMPP
+    Client to Server - WebSockets
+    TCP - DATA IS GURANTEED IN ORDER, BEST USE NETWORK THROUGHPUT
+    	  May have to open many connections for high throughput thus more memory usage, can be optimized by connection pooling
+    UDP - USE WHEN LOW LATENCY, DATA LOSS IS ACCEPTABLE
+     
+ 10. Concurrency
+     a. Serializable
+     b. ReadCommitted - Prevents dirty reads, Locks only index records but not rows before and after
+        1. Prone to Phantom reads
+     c. ReadUncommitted - Not blocked  by exclusive locks
+     d. RepeatableRead  -  Consistent reads within the same transaction read the snapshot established by the first read.
+
+   
+   
+ Scaling Up Database for million Users:
+ 1. Splitting up Read and write replicas
+ 2. Master slave 
+ 		- Complexity in promoting slave to master
+ 		- 
+    Master Master 
+ 3. Federation - Split up databases by function
+ 		Pros -
+ 		Cons -
+ 		1. Federation is not effective if your schema requires huge functions or tables.
+		2. You'll need to update your application logic to determine which database to read and write.
+		3. Joining data from two databases is more complex with a server link.
+        4. Federation adds more hardware and additional complexity.
+4. Sharding - Distributing subset of data to a different databases
+	Cons - Queries are complex, 
+5. Denormalization - To improve read experience at the expense of write.
+   Maintain redundant copies of data in multiple tables to avoid joins
+   Cons - have to use constraints, if write heavy perf will suffer
+6. Indexes
+7. Joins - 
+	
+  

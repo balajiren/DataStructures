@@ -1,0 +1,11 @@
+1. CGroups - Control groups (cgroups) is a kernel feature that limits, accounts for and isolates the CPU, memory,
+disk I/O and network's usage of one or more processes.
+2. Network namespace
+    - Host has its own interfaces
+    - Has its own veth, routing table and ARP table
+    - ip netns add <namespace>
+3. When container is created, container will have its own network and process namespace
+4. In order to communicate between 2 network namespace, create veth in both the namespaces
+   (virtual ethernet pair) ip link add veth-red
+5. In order to communicate with more than 2 network namespace, create virtual network using switch
+   Example - Linux Bridge -

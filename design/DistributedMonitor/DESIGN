@@ -1,0 +1,8 @@
+design (https://www.slideshare.net/sudhirpg/ganglia-monitoring-tool)
+------
+1. Monitors clusters and grids
+2. Used multicast listen/announce protocol
+3. Has one web client connected to a central server agent 
+4. Central agent is connected to invidual nodes in the cluster to collect metrics
+5. Any node in the client cluster can failover to perform as a server node
+6. Used heartbeats and polling to check the health status

@@ -1,0 +1,124 @@
+DP NOTES :
+
+1. Edit distance :
+f(m ==0)
+				{
+					result[m][n]=n;
+				}
+				if(n ==0)
+				{
+					result[m][n]=m;
+				}
+				else if( m > 0 && n >0)
+				{
+					if(input1.charAt(m-1) == input2.charAt(n-1))
+					{
+						result[m][n] = result[m-1][n-1];
+					}
+					else
+					{
+						result[m][n] = Math.min(Math.min(1+result[m-1][n],1+result[m][n-1]),1+result[m-1][n-1]);
+					}
+2. Contiguous subarray
+	sum = Math.max(nums[i], sum + nums[i]);
+    result = Math.max(result, sum);
+
+ 3. Stock sell :
+ //find min
+    min = Math.min(min,prices[i]);
+    maxProfit = Math.max(prices[i]-min,maxProfit 
+    
+4. Word break:
+//use hashmap to cache the index
+      for(int end=start+1;end<=s.length();end++) {
+            if(wordDict.contains(s.substring(start,end))) {     
+                List<String> temp = word_Break(s,wordDict,end);
+                
+                
+5. MinCoin change :
+      for(int i=0;i<=amount;i++) {
+        for(int j=0;j<coins.length;j++) {
+       	       dp[i+coin] = Math.min(dp[i]+1,dp[i+coin]); 
+       return dp[amount];
+       
+6. Largest common substring:
+f(a.charAt(i) == b.charAt(j)){
+dp[i][j] = dp[i-1]+d[j-1]+1;  return max(dp[i][j])
+
+7. Largest common subsequence:
+else if(a.charAt(i-1)==b.charAt(j-1)){
+				dp[i][j] = 1 + dp[i-1][j-1];
+			}else{
+				dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+			}
+			
+8. Min path sum:
+// initialize top row
+    for(int i=1; i<n; i++){
+        dp[0][i] = dp[0][i-1] + grid[0][i];
+    }
+ 
+    // initialize left column
+    for(int j=1; j<m; j++){
+        dp[j][0] = dp[j-1][0] + grid[j][0];
+    }
+ 
+	Min(dp[i][j-1] + grid[i][j], dp[i-1][j] + grid[i][j]
+	
+9. Unique paths:
+Initialize cols and rows to 1:
+							 for(int i=0; i<m; i++){
+							        dp[i][0] = 1;
+							    }
+							 
+							    //top row
+							    for(int j=0; j<n; j++){
+							        dp[0][j] = 1;
+							    }
+for(int i=1; i<m; i++){
+        for(int j=1; j<n; j++){
+            dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            
+            
+10. MinEditDistance:
+//init for i & j: for (int i = 0; i <= len1; i++) {
+		dp[i][0] = i;
+	}
+//logic:
+				int replace = dp[i][j] + 1;
+				int insert = dp[i][j + 1] + 1;
+				int delete = dp[i + 1][j] + 1;
+				int min = replace > insert ? insert : replace;
+				min = delete > min ? min : delete;
+				dp[i + 1][j + 1] = min;
+11. Stock sell - 1 trasaction
+	1. Find min from prices
+	2. Get maxprofit by max(maxprofit, prices[i]-min)
+	 min = Math.min(min,prices[i]);
+     maxProfit = Math.max(prices[i] - min,maxProfit);
+     
+ 2 transactions -
+     t1Cost = Math.min(t1Cost,prices[i]);
+           t1Profit = Math.max(t1Profit,prices[i]-t1Cost);
+           t2Cost = Math.min(t2Cost,prices[i]-t1Profit);
+           t2Profit = Math.max(t2Profit,prices[i]-t2Cost); 
+           
+  
+12. Knapsack problem:
+for w : capacity
+if wt[i-1] <=w
+   dp[i][w] = Math.max(dp[i-1] + k[i-1][w-wt[i-1]], dp[i-1][w]);
+else
+   dp[i][w] = dp[i-1][w]
+
+13. Max area
+for (int i = 0; i < heights.length; ++i) {
+            while (stack.peek() != -1 && heights[stack.peek()] >= heights[i]) {
+                maxarea = Math.max(maxarea, heights[stack.pop()] * (i - stack.peek() - 1));
+            }
+            stack.push(i);
+        }
+        while (stack.peek() != -1)
+            maxarea = Math.max(maxarea, heights[stack.pop()] * (heights.length - stack.peek() -1));
+
+        14.

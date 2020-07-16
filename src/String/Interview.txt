@@ -1,0 +1,103 @@
+String operations:
+//Replace non chars
+s.replaceAll("[^a-zA-Z0-9]", "");
+
+//Convert Character to number
+currentInt = currentInt*10 + (c-'0');
+
+
+String Algorithms:
+
+1. 2 pointer
+
+2. HashMap Sliding
+
+3. Sliding window
+		- Substring
+		-    for (int i = 0; i <= N - M; i++) {
+					for(j=0;j<N;j++)
+		-
+4. Find known pattern  - Sliding window
+   If Pattern unknown - Repeated DNA sequence
+
+
+Algorithms:
+
+1. KMP Matching
+http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/
+
+
+package String;
+
+public class test1 {
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+	 //Matching test
+	 int result =	GetPatternMatchIndex("xxxqr", "xxhxxqxxxqrxxgxxxqr");
+	 System.out.println(result);
+	 
+	 int result3 =	GetPatternMatchIndex("qxxxqr", "xxhxxqxxxqrxxgxxxqr");
+	 System.out.println(result3);
+	 
+	 //Not matching test case
+	 int result2 =	GetPatternMatchIndex("xxxqr", "xxhxxqxxxqqxxgxxxqb");
+	 System.out.println(result2);
+
+	
+
+	}
+	
+	
+	
+	
+	//Gets index of parent matching the child index. RunTime O(N) 
+	public static int GetPatternMatchIndex(String child, String parent)
+    {
+	  if(child.length() == 0)
+	  {
+		  return -1;
+	  }
+       int matchstartIndex=0;
+       int parentCounter= 0;
+       in
+       
+    
+    	 Character childChar = child.charAt(i);    
+         for(int j=parentCounter;j<parent.length();j++)
+         {
+             Character parentChar = parent.charAt(j);
+             if(childChar == parentChar)
+             {
+            	 //if child length reached return matching index 
+                if(i+1 == child.length())
+                {
+                	matchstartIndex = parentCounter;
+                	break;
+                }
+                i++;
+                childChar = child.charAt(i);
+ 
+             } else
+             {
+            	 //Reset the child counters but keep incrementing parent as prev. match failed.
+            	 i=-1;
+                 parentCounter++;
+                 break;
+             }
+
+         }
+       
+    
+       if(matchstartIndex > 0)
+       {
+    	   return matchstartIndex;
+       }
+       return -1;
+    } 
+	
+	
+
+	
+}

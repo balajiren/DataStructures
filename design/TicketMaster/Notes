@@ -1,0 +1,46 @@
+
+A movie ticket booking system provides its customers the ability to purchase theatre seats online
+
+##Design Considerations:
+1.Should be highly concurrent & ACID compliant
+2.Should be scalable and can handle surge in traffic
+
+##Capacity Estimation:
+1. 500 cities * 10 cinemas * 2000 seats * 2 shows * (50+50) bytes = 2GB / day
+
+##API:
+SearchMovies(api_dev_key, keyword, city, lat_long, radius, start_datetime, end_datetime, postal_code,
+includeSpellcheck, results_per_page, sorting_order)
+ReserveSeats(api_dev_key, session_id, movie_id, show_id, seats_to_reserve[])
+
+##Database Design:
+1. Movie
+2. Show
+3. Booking
+4. User
+5. Cinema,CinemaHall,Cinema_Seat,City
+6. Show_Seat
+7. Payment
+
+##High Level Design:
+1. User
+2. WebServer
+3. App Server
+4. Cache Server
+5. DB
+6. WaitingUserService - LinkedHashMap
+   ActiveReservationService - LinkedHashMap
+
+##Concurrency:
+1. Set Transaction Isolation Serializable in the SQL Server
+2. BEGIN TRANSACTION
+3. No dirty, repeatable and phantom reads
+
+##Fault Tolerance:
+1. Master slave configuration
+2. No need to store waiting users in the DB and no need for recovery
+
+## Data partition:
+1. Based on ShowID as load gets distributed evenly
+2. Partition based on movie ID can be bad for hot movies
+

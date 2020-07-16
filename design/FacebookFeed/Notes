@@ -1,0 +1,56 @@
+A Newsfeed is the constantly updating list of stories in the middle of Facebook’s homepage
+
+Capacity estimation:
+Let’s assume 300M daily active users with each user fetching their timeline an average of five times a day.
+ This will result in 1.5B newsfeed requests per day or approximately 17,500 requests per second.
+
+System API's:
+getUserFeed(api_dev_key, user_id, since_id, count, max_id, exclude_replies)
+
+Database Design:
+User - Name, email, dob, creationDate
+Entity - ID, Name, Type, Description,Category,creationDate
+UserFollow - UserID, EntityIDFriendID
+FeedItem - FeedItemID,UserID, Contents, NumLikes, Location,creationDate
+FeedMedia - FeedItemID, MediaID
+Media - MediaID, Type, Description, Path,creationDate
+
+High Level Design:
+1. Feed generated from user being followed
+2. Retrieve IDs of all users and entities that Jane follows.
+3. Retrieve latest, most popular and relevant posts for those IDs. These are the potential posts that we can show in Jane’s newsfeed.
+4. Rank these posts based on the relevance to Jane. This represents Jane’s current feed.
+5. Store this feed in the cache and return top posts (say 20) to be rendered on Jane’s feed.
+6. On the front-end, when Jane reaches the end of her current feed, she can fetch the next 20 posts from the server and so on.
+
+High level components:
+1. Web servers
+2. Application servers
+3. Feed Service
+4. Posts database and cache
+5. Video storage and cache
+6. Feed generation service and notification service
+
+Detailed Design:
+1. Using a DB query to get feed will be slow for millions of users
+2. Pregenerate the feed and make it available
+Struct {
+    LinkedHashMap<FeedItemID, FeedItem> feedItems;
+    DateTime lastGenerated;
+}
+3. Only keep feeds in memory for users who access.Also can pre-generate when not logged in
+
+Feed publishing:
+1. Fan-out, push or hybrid
+
+Feed Ranking:
+
+
+Data Sharding:
+1. Sharding posts and metadata
+    - Distribute data to multiple machines such that we can read it efficiently
+2. Sharding feed data
+    - Shard data based on userid with Consistent hashing
+
+
+

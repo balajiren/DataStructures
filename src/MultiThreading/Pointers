@@ -1,0 +1,87 @@
+critical section
+---------------
+
+1. any section that is not safe for the threads
+
+example:
+
+class Test
+{
+
+
+public int count;
+public void add(int input)
+{
+   this.count = this.count+input;
+}
+
+}
+
+2. ways to prevent
+-------------------------
+
+1. making immutable. i.e avoiding setter and create new instance
+2. local variables and references
+3. if resource is created, used and disposed within the thread scope, then its safe
+4. synchronized block
+Only one thread can execute the block
+public synchronized void(int n)
+{
+}
+ synchronized(sender)
+        {
+            // synchronizing the snd object
+            sender.send(msg);
+        }
+5. java volatile
+   marks java shared variables. read from computers's main memory
+   makes variable visible to all the threads
+   but does not prevent race condition
+   example: private volatile mycounter;
+   expensive operation
+   
+6. threadlocal - only the thread that creates can write. others can only read.
+  ThreadLocal<String> t = new  ThreadLocal<String> 
+  {
+  
+    @override
+    public void run()
+    {
+       //set initial value
+       threadLocal.set( (int) (Math.random() * 100D) );
+    }
+    
+  
+  }
+ 7. Deadlock prevention by
+    a. Lock ordering across multiple threads
+    b. Lock timeoout
+    c. Deadlock detection and rollback based on the priority
+    
+ 8. critical section
+    section of code executed by multiple threads
+     public class Counter {
+
+     protected long count = 0;
+
+     public void add(long value){
+         this.count = this.count + value;
+     }
+  }
+ 9. Thread starvation: Reasons : High priority threads
+ Implement fairness using queuing
+ 
+ 10. problems in multithreading are
+ 1. race condition - by synchronizing critical sections
+ 2. deadlock - prevent by ordering
+ 3. starvation - fair sharing
+
+10. Locks support fairness compared to synchronized block
+    Locks can be implemented in 2 seperate methods using
+    Lock lock = ...;
+    lock.lock();
+    try {
+        // access to the shared resource
+    } finally {
+        lock.unlock();
+    }

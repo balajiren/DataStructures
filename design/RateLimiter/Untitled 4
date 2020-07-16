@@ -1,0 +1,41 @@
+Distributed Rate Limiter
+=========================
+1. Use Token button appraoch
+2. Each user has Prefill bucket with fixed amount of tokens
+3. input request will fetch a token and decrement
+4. Periodically refill the bucket
+5. Can handle burst of traffic
+
+refillCount = floor((now() - bucket.lastUpdate) / bucket.refillTime)
+bucket.value = min(
+    bucket.maxAmount,
+    bucket.value + refillCount * bucket.refillAmount
+)
+bucket.lastUpdate = min(
+    now(), 
+    bucket.lastUpdate + refillCount * bucket.refillTime
+)
+
+Each identifier/user corresponds to a sorted set data structure. The keys and values are both equal to the (microsecond) times at which actions were attempted, allowing easy manipulation of this list.
+When a new action comes in for a user, all elements in the set that occurred earlier than (current time - interval) are dropped from the set.
+If the number of elements in the set is still greater than the maximum, the current action is blocked.
+If a minimum difference has been set and the most recent previous element is too close to the current time, the current action is blocked.
+The current action is then added to the set.
+Note: if an action is blocked, it is still added to the set. This means that if a user is continually attempting actions more quickly than the allowed rate, all of their actions will be blocked until they pause or slow their requests.
+If the limiter uses a redis instance, the keys are prefixed with namespace, allowing a single redis instance to support separate rate limiters.
+All redis operations for a single rate-limit check/update are performed as an atomic transaction, allowing rate limiters running on separate processes or machines to share state safely.
+
+
+
+Design:
+Have the number of requests in the Sorted tree Set in the form <K,V> UserID: {UnixTime}
+2 Approaches:
+1. Fixed window => CurrentTime - StartTime <= 1 min Cost: Atomicity, Allowed more than expected
+2. Sliding window => Better than fixed window with Sorted Unixtime
+
+Sharding:
+We can distribute UserData using Consitent hashing
+Can use LRU Writeback cache by updating cache and update db later
+
+
+Can use combination of per-IP and per-User based rate limiting

@@ -1,0 +1,8 @@
+APPROACHES:
+
+1. 2 POINTER
+2. HASHMAP FOR CACHING
+3. if linked list is manipulated. Create dummy node
+   Node dummy = new Node(head);
+   Node p = dummy; //MANIPULATE P
+   return dummy.next;

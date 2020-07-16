@@ -1,0 +1,14 @@
+Design
+--------
+
+1. Web Application - Thin Client
+
+2. Tables - User, Conversation, FriendList, UserStatus (enum)
+
+3. Message has to be idempotent based on the timestamp
+
+4. Application server gets the API call, records the timestamp and stores the clientmessage to DB
+
+5. NO SQL can help with sharding
+
+6. Maintain a simple UserID to Status in Redis Cache of all Online Friends

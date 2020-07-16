@@ -1,0 +1,81 @@
+STEPS FOR SYSTEM DESIGN:
+
+1. GATHER REQUIREMENTS (CLARIFICATION)
+
+2. BACK OF ENVELOPE ESTIMATION I.E SCALE, STORAGE, BANDWIDTH
+
+3. SYSTEM INTERFACE DEFINITION -I.E API Definition
+
+4. DEFINE DATA MODEL - DB Schema
+
+5. HIGH LEVEL DESIGN - High level block diagrams
+
+6. DETAILED DESIGN - Deep dive and expand high level
+
+7. IDENTIFY AND RESOLVE BOTTLENECKS
+
+
+
+
+abstraction -> instance variables - implies relationship between components
+
+Aggregation : 
+Depect elements that are made of smaller components
+
+
+association : 
+
+bi-directional association :
+
+both classes knows relationship
+
+uni-directional association:
+only one class knows association
+
+
+Design Patterns:
+https://howtodoinjava.com/design-patterns/structural/flyweight-design-pattern/
+Creational:
+
+1. Factory
+2. Abstract factory
+3. Proxy
+4. Singleton
+
+Behavioral:
+1. Chain of resp.
+2. Command
+3. Iterator
+4. Observer
+5. State
+6. Visitor
+7. Strategy
+8. Template
+
+Structural:
+1. Flyweight - As per GoF definition, flyweight design pattern enables use sharing of objects to support large numbers of fine-grained objects efficiently. A flyweight is a shared object that can be used in multiple contexts simultaneously. The flyweight acts as an independent object in each context.
+2. Adapter - It enables two incompatible interfaces to work smoothly with each other. 
+   Target, Adapter(middle man), Adaptee (actual class that is not compatible)
+3. Proxy
+4. Composite - Tree like structure . parent and child treated equally 
+   
+SOLID Principles :
+	Single-responsibility Principle - A single class responsible
+	Open-closed Principle - Open for extension but closed for modification
+	Liskov substitution principle - Derived class should be substutitable by base class
+	Interface segregation principle
+	Dependency Inversion principle - Entities depend on abstraction but not on concrete classes
+
+	
+System design algorithms:
+Bloom filter
+Frugal Streaming
+Geohash / S2 Geometry
+Leaky bucket / Token bucket
+Loosy Counting - Ranking algorithm - SetScore() and FindRank() using Nary tree - https://cloud.google.com/datastore/docs/articles/fast-and-reliable-ranking-in-datastore
+Operational transformation - Google docs collaboration func for collab. editing
+Quadtree / Rtree
+Ray casting
+Reverse index - Holds documents that contains keywords
+Rsync algorithm - avoid transmitting bytes already present
+Trie algorithm
